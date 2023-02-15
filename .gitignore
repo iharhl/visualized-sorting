@@ -1,0 +1,17 @@
+# stuff..
+.DS_Store
+.vscode
+
+# SDL2 headers and lib files
+src/include/SDL2/*
+src/lib/*
+
+# build output
+build/*.exe
+build/*.o
+
+# SDL2 dll
+build/SDL2.dll
+
+# own files
+old_main.cpp
