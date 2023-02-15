@@ -1,5 +1,5 @@
 # SDL2 headers and lib files
-*
-!.gitignore
-!include
-!lib
+include/*
+lib/*
+!include/.gitkeep
+!lib/.gitkeep
