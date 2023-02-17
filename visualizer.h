@@ -17,9 +17,9 @@ class Visualizer
 
     public:
 
-        Visualizer(Coord windowSize, const char* windowTitle);
+        Visualizer(Coord windowSize, const char* windowTitle, const int vectorSize);
         ~Visualizer();
-
+        
         void run();
         void generateRandomVector();
 
@@ -35,17 +35,19 @@ class Visualizer
         void handleEvent();
         void draw();
         void drawState();
-        void sortStep();
+        void BubbleSortStep();
 
+        const int vectorSize;
         std::vector<int> numbers = { };
 		int columnWidth = 0;
 		int maxValue = 0;
 		bool running = true;
 
-        // fix
-        int currentI = 0;
-        int currentJ = 0;
-
+        // for future
+        int red = 0;
+        // int blue = 0;
+        int iterations = 0;
+        int swaps = 0;
 };
 
 

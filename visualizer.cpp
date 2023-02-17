@@ -3,8 +3,8 @@
 namespace SortEngine 
 {
 
-Visualizer::Visualizer(Coord windowSize, const char* windowTitle)
-	: windowSize(windowSize)
+Visualizer::Visualizer(Coord windowSize, const char* windowTitle, const int vectorSize)
+	: windowSize(windowSize), vectorSize(vectorSize)
 {
 	if (SDL_InitSubSystem(SDL_INIT_VIDEO) < 0)
 	{
@@ -49,7 +49,7 @@ void Visualizer::initRenderer()
 	);
 
 	// old -> fix
-	SDL_RenderSetScale(renderer, windowSize.X / 100,  windowSize.Y / 100);
+	SDL_RenderSetScale(renderer, windowSize.X / vectorSize,  windowSize.Y / 100);
 
 	if (renderer == nullptr)
 	{
@@ -70,10 +70,7 @@ void Visualizer::run()
 	while (running)
 	{
 		handleEvent();
-		if (!std::is_sorted(numbers.begin(), numbers.end()))
-		{
-			sortStep();
-		}
+		BubbleSortStep();
 		draw();
 	}
 }
@@ -101,6 +98,7 @@ void Visualizer::draw()
 	SDL_RenderClear(renderer);
 	drawState();
 	SDL_RenderPresent(renderer);
+	SDL_Delay(10);
 }
 
 void Visualizer::drawState()
@@ -112,10 +110,10 @@ void Visualizer::drawState()
     int index = 0;
     for (int i : numbers)
     {
-        if (index == currentI)
+        if (index == red)
             SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
-        else if (index == currentJ)
-            SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
+        // else if (index == blue)
+        //     SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
         else
             SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
         SDL_RenderDrawLine(renderer, index, 99, index, i);
@@ -125,32 +123,31 @@ void Visualizer::drawState()
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 }
 
-void Visualizer::sortStep()
+void Visualizer::BubbleSortStep()
 {
 	static unsigned i = 0;
-	static unsigned j = 0;
+	// static unsigned j = 0;
+	static int size = numbers.size();
 
-	if (j < numbers.size())
+	// end of simulation
+	if (i==numbers.size())
 	{
-		if(numbers[j] < numbers[i])
-		{
-			std::swap(numbers[j],numbers[i]);
-		}
-		j += 1;
-	} else if (i < numbers.size())
-	{
-		j = 0;
-		i += 1;
-
-		// fix below
-		if(numbers[j] < numbers[i])
-		{
-			std::swap(numbers[j],numbers[i]);
-		}
-		j += 1;
+		return;
 	}
-	currentI = i;
-	currentJ = j;
+
+	red = i;
+	// blue = j;
+
+	for (int j = 0; j < size-i-1; ++j)
+	{
+		++iterations;
+		if(numbers[j] > numbers[j+1])
+		{
+			++swaps;
+			std::swap(numbers[j], numbers[j+1]);
+		}
+	}
+	++i;
 }
 
 
@@ -163,7 +160,7 @@ void Visualizer::generateRandomVector()
 
 	// Populate vector
     //
-    for (int i = 0; i < 100; ++i)
+    for (int i = 0; i < vectorSize; ++i)
     {
         numbers.push_back(d(rd));
     }

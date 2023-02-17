@@ -16,3 +16,7 @@ $(BUILD_DIR)/Main.o: main.cpp visualizer.h
 
 $(BUILD_DIR)/Visualizer.o: visualizer.h types.h
 	$(COMPILE) -c visualizer.cpp -o $(BUILD_DIR)/visualizer.o $(LINK)
+
+clean:
+	rm -f $(BUILD_DIR)/*.o
+	rm -f $(BUILD_DIR)/*.exe
